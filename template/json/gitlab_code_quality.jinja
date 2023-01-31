@@ -1,0 +1,28 @@
+{# we will write the fingerprint based on the most basic md5 hash we have.
+   else if that md5 is in use, we will use the line number in the md5 hash.
+   else if that md5 is in use, we will use the column number in the md5 hash.
+#}
+[
+    {% for w in fp.discoveredwarnings %}
+    {
+      "description": "{{w.warningid}}:{{cleanforjson(w.warningmessage)}}",
+      {% if w.md5() not in md5_written %}
+      "fingerprint": "{{w.md5()}}",{{'' if md5_written.add(w.md5()) }}{# append md5 to set, don't print any output #} 
+      {% else %}
+      {% if w.md5(uselinenumber=True) not in md5_written %}
+      "fingerprint": "{{w.md5(uselinenumber=True)}}",{{'' if md5_written.add(w.md5(uselinenumber=True)) }}{#append md5 to set#} 
+      {% else %}
+      "fingerprint": "{{w.md5(uselinenumber=True, usecolnumber=True)}}",{{'' if md5_written.add(w.md5(uselinenumber=True, usecolnumber=True)) }}{#append md5 to set#} 
+      {% endif %}
+      {% endif %}
+      "severity": "{{w.severity.name}}",
+      "colnumber": "{{w.colnumber}}",
+      "location": {
+        "path": "{{getpathfrom(w.fullpath, args.urlrelativeto).as_posix()}}",
+        "lines": {
+          "begin": {{w.linenumber}}
+        }
+      }
+    }{{ "," if not loop.last else "" }} 
+    {% endfor %}
+]

@@ -1,0 +1,27 @@
+<button type="button" class="collapsible"><b>Warnings by ID</b></button>
+<div class="content">
+
+{% for warningid in fp.getUniqueWarningIds() %}
+
+<button type="button" class="collapsible"><b>{{warningid}}</b>:{{fp.getWarningDescriptionFromId(warningid)}} <b>({{len(fp.getWarningsByWarningId(warningid))}})</b></button>
+<div class="content">
+<table>
+<tr><th>File</th> <th>Warning</th> <th>Line</th> <th>Col</th> <th>Message</th> <th>Line of Code</th></tr>
+
+{% for w in fp.getWarningsByWarningId(warningid) %}
+<tr> 
+    <td><a href="{{args.urlbase}}/{{args.gitsha}}/{{getpathfrom(w.fullpath, args.urlrelativeto)}}#L{{w.linenumber}}">{{w.fullpath.name}}</a></td>
+    <td>{{w.warningid}}</td> 
+    <td>{{w.linenumber}}</td> 
+    <td>{{w.colnumber}}</td> 
+    <td>{{w.warningmessage}}</td> 
+    <td>{{htmlescape(w.warningline)}}</td>
+</tr>
+{% endfor %}
+
+</table>
+</div>
+
+{% endfor %}
+
+</div>

@@ -1,0 +1,19 @@
+stages: 
+  - test
+  
+.test: 
+  stage: test
+      
+test_scraper:
+   stage: test
+   script: 
+      - py -3 -m pip install chardet
+      - py -3 -m unittest discover -s ./test -p "test_*.py" -v
+   tags:
+      - vspy3
+   artifacts:
+      name: "warning_scraper_%CI_COMMIT_SHA%"
+      paths:
+        - out*.json
+        - out*.html
+      when: always

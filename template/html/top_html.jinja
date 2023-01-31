@@ -1,0 +1,40 @@
+<html>
+<head>
+<style type="text/css">
+{% include "html/css/style.css" %}
+</style>
+</head>
+<body>
+
+
+<h2>Warning Summary</h2>
+<ul>
+<li>This build SHA-1: {{args.gitsha}}
+<li>Number of warning lines in log: {{fp.totalwarninglines}}
+<li>Number of unique warnings in log: {{len(fp.discoveredwarnings)}}
+<li>Unique warning ids: {{len(fp.getUniqueWarningIds())}}
+</ul>
+
+{% include "html/warnings_by_file_html.jinja" %}
+
+{% include "html/warnings_by_warning_html.jinja" %}
+
+
+<script>
+var coll = document.getElementsByClassName("collapsible");
+var i;
+
+for (i = 0; i < coll.length; i++) {
+  coll[i].addEventListener("click", function() {
+    this.classList.toggle("active");
+    var content = this.nextElementSibling;
+    if (content.style.display === "block") {
+      content.style.display = "none";
+    } else {
+      content.style.display = "block";
+    }
+  });
+}
+</script>
+</body>
+</html>
