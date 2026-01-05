@@ -12,10 +12,12 @@ __pycache__/
 *.tmp
 *.old
 *.bak
+uv.lock
 
 # Ignore build artifacts
 build/
 dist/
+*.egg-info
 *.spec
 *.tar.gz
 *.swp

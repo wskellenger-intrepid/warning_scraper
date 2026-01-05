@@ -1,11 +1,11 @@
 
-import Borland
-import EmbarcaderoClang
-import VisualStudio
-import Gcc
-import Cpplint
+from . import Borland
+from . import EmbarcaderoClang
+from . import VisualStudio
+from . import Gcc
+from . import Cpplint
 from pathlib import Path
-import util 
+from . import util
 import fnmatch
 from chardet.universaldetector import UniversalDetector
 
@@ -13,9 +13,9 @@ from chardet.universaldetector import UniversalDetector
 #and uses it to iterate over an entire file.
 class FileParser(object):
     supportedflavors = ["gcc", "borland", "visualstudio","cpplint","embarcaderoclang"]
-    parsers = [Gcc.GccLineParser, Borland.BorlandLineParser, VisualStudio.VisualStudioLineParser, 
+    parsers = [Gcc.GccLineParser, Borland.BorlandLineParser, VisualStudio.VisualStudioLineParser,
                Cpplint.CpplintLineParser, EmbarcaderoClang.EmbarcaderoClangLineParser]
-    all_warnings = [Gcc.all_warnings, Borland.all_warnings, VisualStudio.all_warnings, 
+    all_warnings = [Gcc.all_warnings, Borland.all_warnings, VisualStudio.all_warnings,
                Cpplint.all_warnings, EmbarcaderoClang.all_warnings]
 
     totalwarninglines = 0
@@ -49,8 +49,8 @@ class FileParser(object):
                 if detector.done:
                     break
             detector.close()
-        
-        #open logfile and start looking for warnings 
+
+        #open logfile and start looking for warnings
         with open(filename, 'r', encoding=detector.result['encoding']) as f:
             for line in f:
                 parser = lineparser[self.flavor]()    #here is where the line parser is called based on flavor
@@ -62,7 +62,7 @@ class FileParser(object):
                         w.fullpath = util.getpathfrom(w.fullpath, relativeto)
                     self.totalwarninglines += 1
                     self.discoveredwarnings.add(w)
-        
+
         # Open each file once for all the warnings that come from the file.
         for file in self.getUniqueFiles():
             self.getWarningLines(file)
@@ -72,7 +72,7 @@ class FileParser(object):
         warnings_in_this_file = self.getWarningsByFullpath(filename)
         for warn in warnings_in_this_file:
             warn.warningline = message
-            warn.fileopened = False        
+            warn.fileopened = False
 
     #get lines of code from the files that had warnings
     def getWarningLines(self, filename):
@@ -156,7 +156,7 @@ class FileParser(object):
 
         if warningid in warningdict.keys():
             result = warningdict[warningid].description
-        
+
         return result
 
     def getWarningSeverityFromId(self, warningid):
@@ -166,7 +166,7 @@ class FileParser(object):
 
         if warningid in warningdict.keys():
             result = warningdict[warningid].severity.name
-        
+
         return result
 
     def removeExcludedWarnings(self, excludedFile = None):

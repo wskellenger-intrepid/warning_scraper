@@ -1,10 +1,10 @@
 import pyparsing as pp
 from pathlib import Path
-from Warning import Warning, OfficialWarningDesc, Severity
-from LineParser import LineParser
-import pp_defs
+from .Warning import Warning, OfficialWarningDesc, Severity
+from .LineParser import LineParser
+from . import pp_defs
 from linecache import getline
-from util import getpathfrom
+from .util import getpathfrom
 
 #warning, description, and severity (using gitlab severity levels: info, minor, major, critical, blocker)
 all_warnings = {

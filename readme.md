@@ -19,13 +19,33 @@ The tool was designed to be flexible enough to support warnings from other compi
 
 ## Prerequisites
 
-* Python 3.6+ 
+* Python 3.8+ 
 
 Additional Python modules required:
 
 * jinja2 -- template engine
 * pyparsing -- powerful parsing framework
 * chardet -- encoding detector
+
+### (Optional) Install 
+Install the tool and its dependencies with **pipx**:
+
+```sh
+cd warning_scraper/
+pipx install .
+```
+
+Or install with **uv**:
+
+```sh
+cd warning_scraper/
+uv tool install .
+```
+
+Now you can just run it on the command line. I.e.:
+
+`warning_scraper --help`
+
 
 ## Running the tool
 

@@ -1,11 +1,11 @@
 from re import A
 import pyparsing as pp
 from pathlib import Path
-from Warning import Warning, OfficialWarningDesc, Severity
-from LineParser import LineParser
-from pp_defs import *
+from .Warning import Warning, OfficialWarningDesc, Severity
+from .LineParser import LineParser
+from .pp_defs import *
 from linecache import getline
-from util import getpathfrom
+from .util import getpathfrom
 
 #warning, description, and severity (using gitlab severity levels: info, minor, major, critical, blocker)
 #TODO: warnings are defined here for clang 5.0:  https://releases.llvm.org/5.0.0/tools/clang/docs/DiagnosticsReference.html
@@ -1000,7 +1000,7 @@ class EmbarcaderoClangLineParser(LineParser):
             try:
                 warningobj.warningid = self.matches["warningid"].strip()
             except:
-                warningobj.warningid = ""                
+                warningobj.warningid = ""
 
             try:
                 warningobj.severity = all_warnings[warningobj.warningid].severity
@@ -1018,5 +1018,5 @@ class EmbarcaderoClangLineParser(LineParser):
 
         if warningid in all_warnings.keys():
             result = all_warnings[warningid].severity
-        
+
         return result

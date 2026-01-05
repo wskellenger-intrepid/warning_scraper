@@ -1,10 +1,10 @@
 import argparse
 import sys
 import os
-from FileParser import FileParser
-from Warning import Warning
+from .FileParser import FileParser
+from .Warning import Warning
 from pathlib import Path
-import util
+from . import util
 import jinja2
 import html
 
@@ -33,10 +33,7 @@ def get_script_path():
     """
     Get the path of this script, which is where templates are
     """
-    if (__name__ == "__main__"):
-        return os.path.dirname(os.path.realpath(sys.argv[0]))
-    else:
-        return "."
+    return os.path.dirname(os.path.realpath(__file__))
 
 def writeReport(args, fp):
     # get template environment ready
@@ -44,7 +41,7 @@ def writeReport(args, fp):
 
     jinja_env = jinja2.Environment(loader=jinja2.FileSystemLoader(
         get_script_path() + '/template/'), trim_blocks=True, lstrip_blocks=True, keep_trailing_newline=True)
-    
+
     if (args.format == "html"):
         template = jinja_env.get_template('html/top_html.jinja')
     elif (args.format == "gitlab_json"):
