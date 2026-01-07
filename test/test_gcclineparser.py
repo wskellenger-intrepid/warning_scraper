@@ -1,7 +1,7 @@
 import unittest
 from pathlib import Path
-from Gcc import GccLineParser
-from FileParser import FileParser
+from warning_scraper.Gcc import GccLineParser
+from warning_scraper.FileParser import FileParser
 
 class TestGccLines(unittest.TestCase):
     def test_line1(self):

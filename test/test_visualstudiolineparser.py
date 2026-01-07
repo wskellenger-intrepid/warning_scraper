@@ -1,7 +1,7 @@
 import unittest
 from pathlib import Path
-from VisualStudio import VisualStudioLineParser
-from FileParser import FileParser
+from warning_scraper.VisualStudio import VisualStudioLineParser
+from warning_scraper.FileParser import FileParser
 
 class TestVisualStudioLines(unittest.TestCase):
     #relative path
@@ -32,4 +32,4 @@ class TestVisualStudioLines(unittest.TestCase):
         self.assertEqual(warning.warningmessage, "'<' : signed/unsigned mismatch")
         self.assertEqual(warning.severity.value, 2)
 
- 
+

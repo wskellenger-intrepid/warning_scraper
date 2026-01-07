@@ -1,7 +1,7 @@
 import unittest
 from pathlib import Path
-from Borland import BorlandLineParser
-from FileParser import FileParser
+from warning_scraper.Borland import BorlandLineParser
+from warning_scraper.FileParser import FileParser
 import copy
 
 class TestBorlandLines(unittest.TestCase):
@@ -15,7 +15,7 @@ class TestBorlandLines(unittest.TestCase):
         self.assertEqual(warning.linenumber, 331)
         self.assertEqual(warning.colnumber, 2)
         self.assertEqual(warning.warningid, "W8104")
-        self.assertEqual(warning.fullpath, Path(r"..\..\..\Core\Stuff\file.h"))
+        self.assertEqual(warning.fullpath, Path(r"..\..\..\Core\Stuff/file.h"))
         self.assertEqual(warning.warningmessage, "Local Static with constructor dangerous for multi-threaded apps")
         self.assertEqual(warning.severity.value, 2)
 
@@ -99,7 +99,7 @@ class TestBorlandLines(unittest.TestCase):
         self.assertEqual(warning.colnumber, 9)
         self.assertEqual(warning.warningid, "W8094")
         self.assertEqual(warning.fullpath, Path(r"C:\GitLab-runner\builds\0db49454\0\test\test\Core\Hardware\cicsspyTestDialog.cpp"))
-        self.assertEqual(warning.warningmessage, 'Incorrect use of #pragma comment( <type> [,"string"] )')        
+        self.assertEqual(warning.warningmessage, 'Incorrect use of #pragma comment( <type> [,"string"] )')
         self.assertEqual(warning.severity.value, 2)
 
     def test_line8(self):

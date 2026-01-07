@@ -1,8 +1,8 @@
 import unittest
 from pathlib import Path
-from EmbarcaderoClang import EmbarcaderoClangLineParser
-from Warning import Severity
-from FileParser import FileParser
+from warning_scraper.EmbarcaderoClang import EmbarcaderoClangLineParser
+from warning_scraper.Warning import Severity
+from warning_scraper.FileParser import FileParser
 import copy
 
 class TestEmbarcaderoClangLines(unittest.TestCase):
