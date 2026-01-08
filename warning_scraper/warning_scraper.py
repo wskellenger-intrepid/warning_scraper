@@ -21,6 +21,8 @@ def getargs():
     parser.add_argument(
         "--urlbase", help="the base URL path to locate the report artifact on your Gitlab server")
     parser.add_argument("--excludelist", help="path to the textfile containing files or directories to be included in wildcard format")
+    parser.add_argument("--exit-nonzero-on-warnings", action="store_true", 
+                        help="exit with non-zero code if warnings are detected (useful for CI/CD)")
     args = parser.parse_args()
 
     if len(sys.argv) == 1:
@@ -72,6 +74,11 @@ def main():
     fp.removeExcludedWarnings(args.excludelist)
     writeReport(args, fp)
     checkReport(args, fp)
+    
+    # Exit with non-zero code if warnings are found and the flag is set
+    if args.exit_nonzero_on_warnings and len(fp.discoveredwarnings) > 0:
+        print(f"Found {len(fp.discoveredwarnings)} warning(s), exiting with non-zero code")
+        sys.exit(1)
 
 
 if __name__ == "__main__":
