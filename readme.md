@@ -4,6 +4,8 @@ A python script to scrape compiler warnings and generate summary reports.
 * February 2021
 * Matthew Loehr (mloehr@intrepidcs.com)
 * May 2021
+* Paul Abbott (@phatpaul)
+* Jan 2026
 
 ## Motivation
 
