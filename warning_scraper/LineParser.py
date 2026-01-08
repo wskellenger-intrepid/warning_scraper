@@ -1,4 +1,4 @@
-import Warning
+from . import Warning
 import pyparsing as pp
 
 class LineParser(object):

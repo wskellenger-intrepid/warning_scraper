@@ -1,0 +1,19 @@
+[project]
+name = "warning_scraper"
+version = "0.1"
+description = "A python script to scrape compiler warnings and generate summary reports."
+requires-python = ">=3.8"
+dependencies = [
+  "jinja2",
+  "pyparsing",
+  "chardet",
+]
+
+[project.scripts]
+warning_scraper = "warning_scraper:main"
+
+[tool.setuptools.packages.find]
+include = ["warning_scraper*"]
+
+[tool.setuptools.package-data]
+warning_scraper = ["template/**/*"]

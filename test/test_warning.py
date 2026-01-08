@@ -1,10 +1,10 @@
 import weakref
-from Borland import BorlandLineParser
+from warning_scraper.Borland import BorlandLineParser
 import unittest
-from Warning import Warning
+from warning_scraper.Warning import Warning
 from pathlib import Path
-from VisualStudio import VisualStudioLineParser
-from Gcc import GccLineParser
+from warning_scraper.VisualStudio import VisualStudioLineParser
+from warning_scraper.Gcc import GccLineParser
 
 class TestWarning(unittest.TestCase):
     def test_warning_hash(self):
@@ -33,7 +33,7 @@ class TestWarning(unittest.TestCase):
         #add column number to w2
         w2.colnumber = 1
         self.assertNotEqual(w1.md5(), w2.md5(usecolnumber=True))
-        
+
         w1.linenumber = 110
         w1.fullpath = Path("fizzbuzz.c")
         w1.warningid = "some warning"
@@ -49,4 +49,3 @@ class TestWarning(unittest.TestCase):
         w2.fileopened = True
 
         self.assertNotEqual(w1.md5(), w2.md5())
-    

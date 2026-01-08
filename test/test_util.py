@@ -1,32 +1,32 @@
 import unittest
-import util
+import warning_scraper.util as util
 from pathlib import Path
 
 class TestUtilGetPathFrom(unittest.TestCase):
     def test_getpathfrom1(self):
-        mypath = Path(r"c:\Users\Me\Projects\fizzbuzz\Core\CoreLib\corefile.h")
+        mypath = Path(r"c:/Users/Me/Projects/fizzbuzz/Core/CoreLib/corefile.h")
         out = util.getpathfrom(mypath, "fizzbuzz")
-        self.assertEqual(out, Path(r"Core\CoreLib\corefile.h"))
+        self.assertEqual(out, Path(r"Core/CoreLib/corefile.h"))
 
     def test_getpathfrom2(self):
-        mypath = Path(r"c:\Users\Me\Projects\fizzbuzz\Core\CoreLib\corefile.h")
+        mypath = Path(r"c:/Users/Me/Projects/fizzbuzz/Core/CoreLib/corefile.h")
         out = util.getpathfrom(mypath, "fizzbuzz", include=True)
-        self.assertEqual(out, Path(r"fizzbuzz\Core\CoreLib\corefile.h"))
+        self.assertEqual(out, Path(r"fizzbuzz/Core/CoreLib/corefile.h"))
 
     def test_getpathfrom3(self):
-        mypath = Path(r"c:\Users\Me\Projects\fizzbuzz\Core\CoreLib\corefile.h")
+        mypath = Path(r"c:/Users/Me/Projects/fizzbuzz/Core/CoreLib/corefile.h")
         out = util.getpathfrom(mypath, "fiddle", include=True)
         self.assertEqual(out, mypath)
 
     def test_getpathfrom4(self):
-        mypath = Path(r"..\..\..\Core\CoreLib\corefile.h")
+        mypath = Path(r"../../../Core/CoreLib/corefile.h")
         out = util.getpathfrom(mypath, "fizzbuzz")
-        self.assertEqual(out, Path(r"Core\CoreLib\corefile.h"))
+        self.assertEqual(out, Path(r"Core/CoreLib/corefile.h"))
 
     def test_getpathfrom5(self):
-        mypath = Path(r"..\..\..\Core\CoreLib\Foo\..\corefile.h")
+        mypath = Path(r"../../../Core/CoreLib/Foo/../corefile.h")
         out = util.getpathfrom(mypath, "fizzbuzz")
-        self.assertEqual(out, Path(r"Core\CoreLib\Foo\..\corefile.h"))
+        self.assertEqual(out, Path(r"Core/CoreLib/Foo/../corefile.h"))
 
 
 class TestUtilCleanForJson(unittest.TestCase):

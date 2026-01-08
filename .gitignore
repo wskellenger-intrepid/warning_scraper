@@ -1,4 +1,23 @@
+# Ignore Python virtual environment and cache files
+venv/
+__pycache__/
 *.pyc
 *.html
 *.json
 *.bat
+*.pyo
+*.pyd
+*.log
+*.out
+*.tmp
+*.old
+*.bak
+uv.lock
+
+# Ignore build artifacts
+build/
+dist/
+*.egg-info
+*.spec
+*.tar.gz
+*.swp

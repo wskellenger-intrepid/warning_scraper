@@ -1,24 +1,21 @@
 import pyparsing as pp
 from pathlib import Path
-from Warning import Warning
-from LineParser import LineParser
-import pp_defs
+from .Warning import Warning, OfficialWarningDesc, Severity
+from .LineParser import LineParser
+from . import pp_defs
 from linecache import getline
-from util import getpathfrom
-
-#TODO: IMPLEMENT
-
+from .util import getpathfrom
 
 all_warnings = {
 }
 
 #example
-#   /full/path/to/helloworld.h:230:7: warning: 'DiagnosticJobImpl' has a field 'DiagnosticJobImpl::m_eCANTxType' whose type uses the anonymous namespace [enabled by default]
-class GccLineParser(LineParser):
+#Some/Path/filename.cpp:7728:  Almost always, snprintf is better than strcpy  [runtime/printf] [4]
+class CpplintLineParser(LineParser):
 
-    grammar = pp.SkipTo(pp_defs.GCCPOSITIONINFO)("file") + pp_defs.GCCPOSITIONINFO("pos") \
-            + pp.Literal("warning:") + pp.White() \
-            + pp.SkipTo(pp_defs.BRACKETED("warningid") + pp.LineEnd(), include=True)("message")
+    grammar = pp.SkipTo(pp_defs.CPPLINTPOSITIONINFO)("file") + pp_defs.CPPLINTPOSITIONINFO("pos") \
+            + pp.White() \
+            + pp.SkipTo(pp_defs.BRACKETED)("message") + pp_defs.BRACKETED("warningid") + pp_defs.BRACKETED("severity")
 
     def setGrammar(self, grammar):
         self.grammar = grammar
@@ -39,8 +36,6 @@ class GccLineParser(LineParser):
             try:
                 pos = self.matches["pos"]
                 warningobj.linenumber = int(pos[0])
-                if len(self.matches["pos"]) == 2:
-                    warningobj.colnumber = int(pos[1])
             except:
                 print("Error: Parser failed to match on line: {0}".format(self.rawline))
 
@@ -48,7 +43,7 @@ class GccLineParser(LineParser):
                 warningobj.warningid = self.matches["warningid"].strip()
             except:
                 warningobj.warningid = ""
-            
+
             try:
                 warningobj.warningmessage = self.matches["message"].strip()
             except:
@@ -58,6 +53,11 @@ class GccLineParser(LineParser):
                 warningobj.fullpath = Path(self.matches["file"])
             except:
                 warningobj.fullpath = ""
+
+            try:
+                warningobj.severity = Severity(int(self.matches["severity"]))
+            except:
+                warningobj.severity = Severity.info
 
         return warningobj
 

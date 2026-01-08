@@ -1,8 +1,8 @@
 from multiprocessing.sharedctypes import Value
 import unittest
 from pathlib import Path
-from Cpplint import CpplintLineParser
-from FileParser import FileParser
+from warning_scraper.Cpplint import CpplintLineParser
+from warning_scraper.FileParser import FileParser
 
 class TestCpplintLines(unittest.TestCase):
     def test_line1(self):

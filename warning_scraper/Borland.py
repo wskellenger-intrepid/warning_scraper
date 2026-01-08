@@ -1,11 +1,11 @@
 from re import A
 import pyparsing as pp
 from pathlib import Path
-from Warning import Warning, OfficialWarningDesc, Severity
-from LineParser import LineParser
-from pp_defs import *
+from .Warning import Warning, OfficialWarningDesc, Severity
+from .LineParser import LineParser
+from .pp_defs import *
 from linecache import getline
-from util import getpathfrom
+from .util import getpathfrom
 
 #warning, description, and severity (using gitlab severity levels: info, minor, major, critical, blocker)
 all_warnings = {
@@ -201,5 +201,5 @@ class BorlandLineParser(LineParser):
 
         if warningid in all_warnings.keys():
             result = all_warnings[warningid].severity
-        
-        return result        
+
+        return result
