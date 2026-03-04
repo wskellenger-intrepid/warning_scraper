@@ -78,8 +78,9 @@ warning_scraper.py --logfile whatever.txt --flavor borland --gitsha abcd12342 --
 ### urlrelativeto
 
 If a warning was discovered in `C:\cirunner\12345\path\to\project\src\module\module.cpp`, you could 
-specify `--urlrelativeto project` at the commandline to store the path as relative to 'project', so you'd get
-`src\module\module.cpp` instead.
+specify the common folder name `--urlrelativeto project` at the commandline to store the path as relative to 'project', so you'd get `src\module\module.cpp` instead.
+
+Alternatively, you may specify the urlrelativeto as an absolute path prefix, i.e. `--urlrelativeto C:\cirunner\12345\path\to\project` to get the same result.  For gitlab CI, use `--urlrelativeto ${CI_PROJECT_DIR}` (added 2026-03-04)
 
 ### excludelist (added August 2021)
 
@@ -151,6 +152,8 @@ code-quality-job:
     # Run python script to parse the build log and generate code quality report
     # The --print-warnings flag will display warnings in the job log for easy viewing
     - warning_scraper --logfile ${FW_DIR}/build/build_log.txt --flavor gcc --format gitlab_json --output ${FW_DIR}/build/code_quality_report.json --print-warnings --exit-nonzero-on-warnings
+    # The --urlrelativeto option allows you to specify a Gitlab URL for where the resulting html code quality report will be output
+    - warning_scraper --logfile ${FW_DIR}/build/build_log.txt --flavor gcc --format gitlab_json --urlrelativeto ${CI_PROJECT_DIR} --output ${FW_DIR}/build/code_quality_report.json --exit-nonzero-on-warnings
   artifacts:
     paths:
       - ${FW_DIR}/build/code_quality_report.json
