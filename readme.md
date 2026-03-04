@@ -144,3 +144,18 @@ The `allow_failure: true` setting ensures that:
 - The job is marked as failed/warning state when warnings exist  
 - Artifacts are still uploaded when the job fails
 - The overall pipeline status reflects the warning condition
+
+### Tip: Run it locally in docker to test how CI would do it
+
+```sh
+# run bash in python:3.12 docker container. Map current dir to /opt/src in the docker. (on windows cmd replace $(pwd) with %cd% )
+docker run -it --rm -v $(pwd):/opt/src -w /opt/src python:3.12 bash
+# Now inside container,
+# CD to warning_scraper dir, then install deps into docker container
+pip install .
+# set project dir (adjust as needed)
+export FW_DIR=/opt/src/my_firmware_dir
+# run warning_scraper
+warning_scraper --logfile ${FW_DIR}/build/build_log.txt --flavor gcc --format gitlab_json --output ${FW_DIR}/build/code_quality_report.json --exit-nonzero-on-warnings
+
+```
