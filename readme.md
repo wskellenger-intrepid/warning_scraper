@@ -65,10 +65,13 @@ command-line options:
 --urlrelativeto: will truncate the discovered file paths such that they are relative to this directory, more info below
 --excludelist: a text file containing a list of files that should be exlcluded from warnings.  The list can contain wildcards.
 --exit-nonzero-on-warnings: exit with non-zero code if warnings are detected (useful for CI/CD)
+--print-warnings: print warnings to console output
 ```
 
 Example invocation:
+```sh
 warning_scraper.py --logfile whatever.txt --flavor borland --gitsha abcd12342 --format html --outputfile out.html
+```
 
 ## Explanation of arguments
 
@@ -100,6 +103,24 @@ When the `--exit-nonzero-on-warnings` flag is specified, the tool will exit with
 
 This is particularly useful in CI/CD environments where you want the build pipeline to indicate failure when warnings are present.
 
+### print-warnings (added March 2026)
+
+When the `--print-warnings` flag is specified, all scraped warnings will be printed to the console in a human-readable format, organized by file and line number.
+
+This is useful if you want to view warnings directly in the log output without downloading report artifacts. You can use this flag:
+- **Alone**: To only print warnings to console (omit `--outputfile`)
+- **With `--outputfile`**: To both print warnings and generate a report file
+
+Example for console-only output:
+```sh
+warning_scraper --logfile build.log --flavor gcc --print-warnings
+```
+
+Example for both console and report:
+```sh
+warning_scraper --logfile build.log --flavor gcc --print-warnings --outputfile report.json --format gitlab_json
+```
+
 ## Example Gitlab CI
 
  For example, in GitLab CI you can use:
@@ -128,7 +149,8 @@ code-quality-job:
     - cd ${CI_PROJECT_DIR}/tools/warning_scraper
     - pip install .
     # Run python script to parse the build log and generate code quality report
-    - warning_scraper --logfile ${FW_DIR}/build/build_log.txt --flavor gcc --format gitlab_json --output ${FW_DIR}/build/code_quality_report.json --exit-nonzero-on-warnings
+    # The --print-warnings flag will display warnings in the job log for easy viewing
+    - warning_scraper --logfile ${FW_DIR}/build/build_log.txt --flavor gcc --format gitlab_json --output ${FW_DIR}/build/code_quality_report.json --print-warnings --exit-nonzero-on-warnings
   artifacts:
     paths:
       - ${FW_DIR}/build/code_quality_report.json
