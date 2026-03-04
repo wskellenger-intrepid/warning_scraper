@@ -6,13 +6,14 @@
     {% for w in fp.discoveredwarnings %}
     {
       "description": "{{w.warningid}}:{{cleanforjson(w.warningmessage)}}",
+      "check_name": "{{w.warningid}}",
       {% if w.md5() not in md5_written %}
-      "fingerprint": "{{w.md5()}}",{{'' if md5_written.add(w.md5()) }}{# append md5 to set, don't print any output #} 
+      "fingerprint": "{{w.md5()}}",{{'' if md5_written.add(w.md5()) }}{# append md5 to set, don't print any output #}
       {% else %}
       {% if w.md5(uselinenumber=True) not in md5_written %}
-      "fingerprint": "{{w.md5(uselinenumber=True)}}",{{'' if md5_written.add(w.md5(uselinenumber=True)) }}{#append md5 to set#} 
+      "fingerprint": "{{w.md5(uselinenumber=True)}}",{{'' if md5_written.add(w.md5(uselinenumber=True)) }}{#append md5 to set#}
       {% else %}
-      "fingerprint": "{{w.md5(uselinenumber=True, usecolnumber=True)}}",{{'' if md5_written.add(w.md5(uselinenumber=True, usecolnumber=True)) }}{#append md5 to set#} 
+      "fingerprint": "{{w.md5(uselinenumber=True, usecolnumber=True)}}",{{'' if md5_written.add(w.md5(uselinenumber=True, usecolnumber=True)) }}{#append md5 to set#}
       {% endif %}
       {% endif %}
       "severity": "{{w.severity.name}}",
@@ -23,6 +24,6 @@
           "begin": {{w.linenumber}}
         }
       }
-    }{{ "," if not loop.last else "" }} 
+    }{{ "," if not loop.last else "" }}
     {% endfor %}
 ]
