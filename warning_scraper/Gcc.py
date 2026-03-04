@@ -1,19 +1,21 @@
 import pyparsing as pp
 from pathlib import Path
-from .Warning import Warning
+from .Warning import Warning, OfficialWarningDesc, Severity
 from .LineParser import LineParser
 from . import pp_defs
 from linecache import getline
 from .util import getpathfrom
 
-#TODO: IMPLEMENT
-
-
 all_warnings = {
+#TODO: IMPLEMENT
+# GCC warnings don't have an official severity level, so no point in mapping them. 
+# The warning message contains the location, a message, and a warning ID in brackets at the end i.e. [-Wunused-variable].
 }
 
-#example
+#examples
 #   /full/path/to/helloworld.h:230:7: warning: 'DiagnosticJobImpl' has a field 'DiagnosticJobImpl::m_eCANTxType' whose type uses the anonymous namespace [enabled by default]
+# ../../../src/spectral/phasevoc.c:112:36: warning: passing argument 1 of 'new_aubio_window' discards 'const' qualifier from pointer target type [-Wdiscarded-qualifiers]
+
 class GccLineParser(LineParser):
 
     grammar = pp.SkipTo(pp_defs.GCCPOSITIONINFO)("file") + pp_defs.GCCPOSITIONINFO("pos") \
@@ -58,6 +60,9 @@ class GccLineParser(LineParser):
                 warningobj.fullpath = Path(self.matches["file"])
             except:
                 warningobj.fullpath = ""
+
+            # treat all warnings as minor, since GCC does not have an official mapping
+            warningobj.severity = Severity.minor
 
         return warningobj
 
