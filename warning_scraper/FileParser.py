@@ -7,7 +7,7 @@ from . import Cpplint
 from pathlib import Path
 from . import util
 import fnmatch
-from chardet.universaldetector import UniversalDetector
+from chardet import UniversalDetector
 
 #Used for parsing an entire file.  The file parser just loads the correct type of line parser,
 #and uses it to iterate over an entire file.
