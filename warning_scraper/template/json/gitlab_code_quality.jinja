@@ -19,7 +19,7 @@
       "severity": "{{w.severity.name}}",
       "colnumber": "{{w.colnumber}}",
       "location": {
-        "path": "{{getpathfrom(w.fullpath, args.urlrelativeto).as_posix()}}",
+        "path": "{{cleanforjson(getpathfrom(w.fullpath, args.urlrelativeto).as_posix())}}",
         "lines": {
           "begin": {{w.linenumber}}
         }
