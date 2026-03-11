@@ -20,7 +20,7 @@ class GccLineParser(LineParser):
 
     grammar = pp.SkipTo(pp_defs.GCCPOSITIONINFO)("file") + pp_defs.GCCPOSITIONINFO("pos") \
             + pp.Literal("warning:") + pp.White() \
-            + pp.SkipTo(pp_defs.BRACKETED("warningid") + pp.LineEnd(), include=True)("message")
+            + pp.restOfLine("fullmessage")
 
     def setGrammar(self, grammar):
         self.grammar = grammar
@@ -46,15 +46,22 @@ class GccLineParser(LineParser):
             except:
                 print("Error: Parser failed to match on line: {0}".format(self.rawline))
 
+            # Parse warning ID and message from fullmessage
             try:
-                warningobj.warningid = self.matches["warningid"].strip()
+                fullmessage = self.matches["fullmessage"].strip()
             except:
-                warningobj.warningid = ""
-
-            try:
-                warningobj.warningmessage = self.matches["message"].strip()
-            except:
-                warningobj.warningmessage = ""
+                fullmessage = ""
+            
+            # Set defaults
+            warningobj.warningid = ""
+            warningobj.warningmessage = fullmessage
+            
+            # Try to extract bracketed warning ID at the end
+            if fullmessage.endswith(']'):
+                bracket_start = fullmessage.rfind('[')
+                if bracket_start != -1:
+                    warningobj.warningid = fullmessage[bracket_start+1:-1].strip()
+                    warningobj.warningmessage = fullmessage[:bracket_start].strip()
 
             try:
                 warningobj.fullpath = Path(self.matches["file"])
