@@ -4,6 +4,7 @@ from . import EmbarcaderoClang
 from . import VisualStudio
 from . import Gcc
 from . import Cpplint
+from . import Ruff
 from pathlib import Path
 from . import util
 import fnmatch

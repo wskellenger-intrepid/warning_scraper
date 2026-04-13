@@ -1,10 +1,10 @@
 import pyparsing as pp
 from pathlib import Path
-from Warning import Warning
-from LineParser import LineParser
-import pp_defs
+from .Warning import Warning
+from .LineParser import LineParser
+from . import pp_defs
 from linecache import getline
-from util import getpathfrom
+from .util import getpathfrom
 
 #TODO: IMPLEMENT
 
