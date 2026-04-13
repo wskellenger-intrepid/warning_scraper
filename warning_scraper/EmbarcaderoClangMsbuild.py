@@ -27,7 +27,7 @@ class EmbarcaderoClangMsbuildLineParser(LineParser):
 
     def parseLine(self):
         try:
-            self.matches = self.grammar.parseString(self.rawline)
+            self.matches = self.grammar.parse_string(self.rawline)
         except:
             self.matches = None
 
