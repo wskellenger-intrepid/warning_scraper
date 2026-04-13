@@ -15,4 +15,5 @@ RELATIVEFILEPATH = pp.Combine(
 POSITIONINFO = (LPAREN + NUMBERS + pp.ZeroOrMore(COMMA + NUMBERS) + RPAREN + COLON)  #examples: (123):  (123,3):  (123,344):
 GCCPOSITIONINFO = (COLON + NUMBERS + COLON + NUMBERS + COLON)  #examples:  :123:34:  :1:1:
 CPPLINTPOSITIONINFO = (COLON + NUMBERS + COLON)  #examples:  :445:, :249:
+RUFFPOSITIONINFO = (COLON + NUMBERS + COLON + NUMBERS + COLON)  #examples:  testers\neoradio2aintester.py:351:121:
 CLANGWARNINGGROUP = pp.QuotedString(quoteChar="[-W", endQuoteChar="]")

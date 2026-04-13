@@ -12,11 +12,11 @@ from chardet import UniversalDetector
 #Used for parsing an entire file.  The file parser just loads the correct type of line parser,
 #and uses it to iterate over an entire file.
 class FileParser(object):
-    supportedflavors = ["gcc", "borland", "visualstudio","cpplint","embarcaderoclang"]
-    parsers = [Gcc.GccLineParser, Borland.BorlandLineParser, VisualStudio.VisualStudioLineParser,
-               Cpplint.CpplintLineParser, EmbarcaderoClang.EmbarcaderoClangLineParser]
-    all_warnings = [Gcc.all_warnings, Borland.all_warnings, VisualStudio.all_warnings,
-               Cpplint.all_warnings, EmbarcaderoClang.all_warnings]
+    supportedflavors = ["gcc", "borland", "visualstudio","cpplint","embarcaderoclang","ruff"]
+    parsers = [Gcc.GccLineParser, Borland.BorlandLineParser, VisualStudio.VisualStudioLineParser, 
+               Cpplint.CpplintLineParser, EmbarcaderoClang.EmbarcaderoClangLineParser, Ruff.RuffLineParser]
+    all_warnings = [Gcc.all_warnings, Borland.all_warnings, VisualStudio.all_warnings, 
+               Cpplint.all_warnings, EmbarcaderoClang.all_warnings, Ruff.all_warnings]
 
     totalwarninglines = 0
     discoveredwarnings = None
