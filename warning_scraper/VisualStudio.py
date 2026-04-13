@@ -829,7 +829,7 @@ all_warnings = {
 #C:\Project\file.h(1061): warning C4267: 'initializing' : conversion from 'size_t' to 'const int', possible loss of data
 class VisualStudioLineParser(LineParser):
 
-    grammar = pp.SkipTo(pp_defs.POSITIONINFO)("file") + pp_defs.POSITIONINFO("pos") \
+    grammar = pp.Optional(pp.Word(pp.nums) + pp.Literal(">")) + pp.SkipTo(pp_defs.POSITIONINFO)("file") + pp_defs.POSITIONINFO("pos") \
             + pp.Literal("warning") + pp.Combine('C' + pp_defs.NUMBERS)("warningid") + pp_defs.COLON + pp.White() \
             + pp.SkipTo(pp_defs.BRACKETED + pp.LineEnd(), include=True)("message")
 
@@ -841,7 +841,7 @@ class VisualStudioLineParser(LineParser):
 
     def parseLine(self):
         try:
-            self.matches = self.grammar.parseString(self.rawline)
+            self.matches = self.grammar.parse_string(self.rawline)
         except:
             self.matches = None
 

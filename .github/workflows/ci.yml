@@ -33,3 +33,32 @@ jobs:
             out*.json
             out*.html
           if-no-files-found: ignore
+
+  test-windows:
+    runs-on: windows-latest
+    permissions:
+      contents: read
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+
+      - name: Install dependencies
+        run: pip install .
+
+      - name: Run tests
+        run: python -m unittest discover -s ./test -p "test_*.py" -v
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: warning_scraper_windows_${{ github.sha }}
+          path: |
+            out*.json
+            out*.html
+          if-no-files-found: ignore

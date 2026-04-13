@@ -2,21 +2,23 @@ import pyparsing as pp
 from pathlib import Path
 from .Warning import Warning, OfficialWarningDesc, Severity
 from .LineParser import LineParser
-from . import pp_defs
+from .pp_defs import *
 from linecache import getline
 from .util import getpathfrom
 
+#warning, description, and severity (using gitlab severity levels: info, minor, major, critical, blocker)
 all_warnings = {
-}
+    }
 
 #example
-#Some/Path/filename.cpp:7728:  Almost always, snprintf is better than strcpy  [runtime/printf] [4]
-class CpplintLineParser(LineParser):
+#     1>..\..\..\Core\Hardware/DevicePort.h(94,15): Hint warning H5413: overridden virtual function is here [C:\GitLab-Runner\builds\MQUm8zU1z\0\ics\Projects\project.cbproj]
+class EmbarcaderoClangMsbuildLineParser(LineParser):
 
-    grammar = pp.SkipTo(pp_defs.CPPLINTPOSITIONINFO)("file") + pp_defs.CPPLINTPOSITIONINFO("pos") \
-            + pp.White() \
-            + pp.SkipTo(pp_defs.BRACKETED)("message") + pp_defs.BRACKETED("warningid") + pp_defs.BRACKETED("severity")
-
+    grammar = pp.Optional(pp.Word(pp.nums) + pp.Literal(">")) + pp.SkipTo(POSITIONINFO)("file") + POSITIONINFO("pos") \
+            + pp.Literal("warning") + pp.Suppress(pp.Combine(pp.one_of(['H', 'E', 'W']) + NUMBERS)) + COLON + pp.White() \
+            + pp.SkipTo(pp.Literal("[-W"))("message") + CLANGWARNINGGROUP("warningid") \
+            + pp.SkipTo(BRACKETED + pp.LineEnd(), include=True)("project")
+        
     def setGrammar(self, grammar):
         self.grammar = grammar
 
@@ -36,26 +38,18 @@ class CpplintLineParser(LineParser):
             try:
                 pos = self.matches["pos"]
                 warningobj.linenumber = int(pos[0])
+                if len(self.matches["pos"]) == 2:
+                    warningobj.colnumber = int(pos[1])
+
+                warningobj.warningid = self.matches["warningid"].strip()
+                warningobj.warningmessage = self.matches["message"].strip()
+
+                warningobj.fullpath = Path(self.matches["file"])
             except:
                 print("Error: Parser failed to match on line: {0}".format(self.rawline))
 
             try:
-                warningobj.warningid = self.matches["warningid"].strip()
-            except:
-                warningobj.warningid = ""
-
-            try:
-                warningobj.warningmessage = self.matches["message"].strip()
-            except:
-                warningobj.warningmessage = ""
-
-            try:
-                warningobj.fullpath = Path(self.matches["file"])
-            except:
-                warningobj.fullpath = ""
-
-            try:
-                warningobj.severity = Severity(int(self.matches["severity"]))
+                warningobj.severity = all_warnings[warningobj.warningid].severity
             except:
                 warningobj.severity = Severity.info
 
