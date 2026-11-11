@@ -1,6 +1,6 @@
 [project]
 name = "warning_scraper"
-version = "0.3"
+version = "0.4"
 description = "A python script to scrape compiler warnings and generate summary reports."
 requires-python = ">=3.10"
 dependencies = [

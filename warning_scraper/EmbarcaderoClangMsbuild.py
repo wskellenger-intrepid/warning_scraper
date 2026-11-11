@@ -6,9 +6,9 @@ from .pp_defs import *
 from linecache import getline
 from .util import getpathfrom
 
-#warning, description, and severity (using gitlab severity levels: info, minor, major, critical, blocker)
-all_warnings = {
-    }
+#the -W groups are the same as the other Embarcadero Clang parser has, so this is its table (warning group, description, severity;
+#a group not listed is minor)
+from .EmbarcaderoClang import all_warnings
 
 #example
 #     1>..\..\..\Core\Hardware/DevicePort.h(94,15): Hint warning H5413: overridden virtual function is here [C:\GitLab-Runner\builds\MQUm8zU1z\0\ics\Projects\project.cbproj]
@@ -51,7 +51,7 @@ class EmbarcaderoClangMsbuildLineParser(LineParser):
             try:
                 warningobj.severity = all_warnings[warningobj.warningid].severity
             except:
-                warningobj.severity = Severity.info
+                warningobj.severity = Severity.minor
 
         return warningobj
 

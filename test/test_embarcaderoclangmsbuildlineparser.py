@@ -2,6 +2,7 @@ import unittest
 from pathlib import Path
 from warning_scraper.EmbarcaderoClangMsbuild import EmbarcaderoClangMsbuildLineParser
 from warning_scraper.FileParser import FileParser
+from warning_scraper.Warning import Severity
 
 class TestEmbarcaderoClangMsbuildLines(unittest.TestCase):
     #relative path
@@ -48,3 +49,18 @@ class TestEmbarcaderoClangMsbuildLines(unittest.TestCase):
         warning = parser.getWarningObject()
         self.assertIsNone(warning)
 
+    def severity_of(self, group):
+        parser = EmbarcaderoClangMsbuildLineParser()
+        parser.setLine(r"     1>..\..\src\foo.cpp(5,7): warning W9999: some message [-W%s] [C:\builds\project\project.cbproj]" % group)
+        parser.parseLine()
+        return parser.getWarningObject().severity
+
+    def test_severity_by_group(self):
+        self.assertEqual(self.severity_of("return-stack-address"), Severity.critical)
+        self.assertEqual(self.severity_of("int-to-pointer-cast"), Severity.major)
+        self.assertEqual(self.severity_of("switch"), Severity.minor)
+        self.assertEqual(self.severity_of("macro-redefined"), Severity.info)
+        self.assertEqual(self.severity_of("shift-count-overflow"), Severity.major)  # only in the table, not picked here
+
+    def test_a_group_not_listed_is_minor(self):
+        self.assertEqual(self.severity_of("some-new-group"), Severity.minor)
